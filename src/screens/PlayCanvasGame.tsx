@@ -7,6 +7,7 @@
 // 3. Wire interactive controls through the typed actions prop
 // 4. Replace placeholder data with props/state
 
+import { useProdCanvasGameStore } from "../features/prod-canvas-game/prod-canvas-game.store";
 
 export type PlayCanvasGameActionId = "start-1";
 
@@ -20,6 +21,8 @@ export interface PlayCanvasGameProps {
 export type PlayCanvasGameActionCallbacks = NonNullable<PlayCanvasGameProps["actions"]>;
 
 export function PlayCanvasGame({ actions }: PlayCanvasGameProps) {
+  const { statusText, highScore } = useProdCanvasGameStore();
+
   return (
     <>
       {/* Root Surface: SURF_PLAY_PAGE */}
@@ -45,13 +48,13 @@ export function PlayCanvasGame({ actions }: PlayCanvasGameProps) {
               {/* Surface: SURF_GAME_STATUS */}
               <div data-surface-id="SURF_GAME_STATUS" className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800" data-setfarm-element-ref="E000002">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <output className="text-xs font-medium text-slate-300" data-setfarm-element-ref="E000003" role="status" aria-label="Game status" data-observable-refs="OBS_START_GAME_STARTED_MESSAGE">Ready to play</output>
+                <span className="text-xs font-medium text-slate-300" data-setfarm-element-ref="E000003" role="status" aria-label="Game status" data-observable-refs="OBS_START_GAME_STARTED_MESSAGE">{statusText}</span>
               </div>
       
               {/* Surface: SURF_HIGH_SCORE_DISPLAY */}
               <div data-surface-id="SURF_HIGH_SCORE_DISPLAY" className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900/90 border border-slate-800 shadow-inner" data-setfarm-element-ref="E000004">
                 <span className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">High Score</span>
-                <output className="text-sm font-mono font-bold text-amber-400" data-setfarm-element-ref="E000005" role="status" aria-label="Current high score" data-observable-refs="OBS_START_PERSISTED_HIGH_SCORE_VALUE">0</output>
+                <span className="text-sm font-mono font-bold text-amber-400" data-setfarm-element-ref="E000005" role="status" aria-label="Current high score" data-observable-refs="OBS_START_PERSISTED_HIGH_SCORE_VALUE" data-value={highScore === null ? undefined : String(highScore)}>{highScore === null ? "" : highScore}</span>
               </div>
             </div>
           </header>
